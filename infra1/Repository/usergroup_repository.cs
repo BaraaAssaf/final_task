@@ -112,19 +112,19 @@ namespace infra1.Repository
             var result = dBContext.dbConnection.ExecuteAsync
                   ("API_UserGroup_Package.userGroup_CRUD", parameter, commandType: CommandType.StoredProcedure);
 
-            IEnumerable<API_User> result1 = dBContext.dbConnection.Query<API_User>
-                ("API_User_Package.user_CRUD", parameter, commandType: CommandType.StoredProcedure);
-
-            var user1 = result1.Where(x => x.id == userblock).FirstOrDefault();
-            var user2 = result1.Where(x => x.id == useridblocked).FirstOrDefault();
+         
+            
+       
+        var user1 = iuser.GetAll().Where(x => x.id == userblock).FirstOrDefault();
+            var user2 = iuser.GetAll().Where(x => x.id == useridblocked).FirstOrDefault();
 
             MimeMessage message = new MimeMessage();
             BodyBuilder builder = new BodyBuilder();
             MailboxAddress from = new MailboxAddress("User", "tessssssssst4@outlook.com");
 
-            MailboxAddress to = new MailboxAddress("user", "bmassaf1997@gmail.com");
+            MailboxAddress to = new MailboxAddress("user", user2.email);
 
-            builder.HtmlBody = "<h1>" +user1.name +"Block"+ user2.name + "</h1>";
+            builder.HtmlBody = "<h1>" +user1.name +"  Block  "+ user2.name + "</h1>";
 
             message.Body = builder.ToMessageBody();
             message.From.Add(from);
@@ -137,7 +137,6 @@ namespace infra1.Repository
                 item.Authenticate("tessssssssst4@outlook.com", "Test@123456789");
                 item.Send(message);
                 item.Disconnect(true);
-
 
             }
 
